@@ -1,0 +1,145 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Guia do Desenvolvedor - TelegramYTDLBot
+
+## 1. Instruções de Configuração
+
+### Pré-requisitos
+- Python 3.x
+- Git
+- Conta no Telegram
+- API ID e API Hash do Telegram
+- Token do Bot do Telegram
+- FFmpeg (para processamento de vídeo)
+
+### Configuração Inicial
+1. Clone o repositório:
+```bash
+git clone https://github.com/hansanaD/TelegramYTDLBot.git
+cd TelegramYTDLBot
+```
+
+2. Instale as dependências:
+```bash
+pip install -r requirements.txt
+```
+
+3. Configure as variáveis de ambiente:
+- Crie um arquivo `.env` na raiz do projeto
+- Adicione seu token do bot:
+```
+BOT_API_KEY = "seu_token_aqui"
+```
+
+### Configuração do Servidor API Local (Opcional)
+Para suportar uploads de até 2GB:
+1. Gere as instruções em https://tdlib.github.io/telegram-bot-api/build.html
+2. Obtenha API ID & HASH em https://core.telegram.org/api/obtaining_api_id
+3. Inicie o servidor:
+```bash
+cd telegram-bot-api/bin
+./telegram-bot-api --api-id=XXXXX --api-hash=XXXXXXXXXXXX --http-port=8081 --local
+```
+
+## 2. Visão Geral da Estrutura do Projeto
+
+### Arquivos Principais
+- `bot.py`: Ponto de entrada principal do bot
+  - Gerencia comandos do bot (/start, /help)
+  - Implementa handlers para mensagens e callbacks
+  - Inicia o worker thread para downloads
+
+- `modules/`: Diretório contendo os módulos do bot
+  - `checker.py`: Verificação de links e informações do vídeo
+    - Valida links do YouTube
+    - Extrai metadados do vídeo
+    - Gera botões de seleção de qualidade
+  - `myqueues.py`: Gerenciamento de filas de download
+    - Implementa sistema de fila para downloads
+    - Gerencia worker thread para processamento
+  - `ytdownloader.py`: Download e processamento de vídeos
+    - Integração com y2mate-api
+    - Download e upload de vídeos
+    - Gerenciamento de arquivos temporários
+
+### Fluxo de Dados
+1. Usuário envia link do YouTube
+2. `checker.py` valida o link e extrai informações
+3. Bot apresenta opções de qualidade
+4. Usuário seleciona qualidade
+5. Download é adicionado à fila em `myqueues.py`
+6. Worker thread processa o download
+7. Vídeo é enviado ao usuário via Telegram
+
+## 3. Fluxo de Trabalho de Desenvolvimento
+
+### Boas Práticas
+1. Sempre crie uma branch para novas funcionalidades
+2. Mantenha o código organizado e documentado
+3. Teste as alterações localmente antes de fazer commit
+4. Siga o padrão de código existente
+5. Mantenha o arquivo `.gitignore` atualizado
+
+### Processo de Desenvolvimento
+1. Clone o repositório
+2. Crie uma nova branch
+3. Faça suas alterações
+4. Teste localmente
+5. Faça commit e push
+6. Crie um Pull Request
+
+## 4. Abordagem de Teste
+
+### Testes Locais
+1. Configure o ambiente de desenvolvimento
+2. Execute o bot localmente:
+```bash
+python bot.py
+```
+3. Teste as funcionalidades usando o @BotFather no Telegram
+
+### Testes de Integração
+1. Verifique a integração com a API do YouTube
+2. Teste o sistema de filas
+3. Verifique o limite de tamanho dos arquivos
+4. Teste diferentes qualidades de vídeo
+5. Verifique o processamento de erros
+
+## 5. Etapas Comuns de Solução de Problemas
+
+### Problemas Comuns
+1. **Erro de Token**
+   - Verifique se o token está correto no arquivo .env
+   - Confirme se o bot está ativo no @BotFather
+
+2. **Erro de Download**
+   - Verifique a conexão com a internet
+   - Confirme se o link do YouTube é válido
+   - Verifique se o vídeo não está restrito
+   - Verifique se o FFmpeg está instalado corretamente
+
+3. **Erro de Upload**
+   - Verifique o limite de tamanho do arquivo
+   - Confirme se o servidor API local está rodando (para arquivos > 2GB)
+   - Verifique as permissões de escrita no diretório temporário
+
+4. **Problemas de Performance**
+   - Monitore o uso de recursos do servidor
+   - Verifique o tamanho da fila de downloads
+   - Considere implementar limites de taxa
+   - Verifique o uso de memória durante downloads grandes
+
+### Logs e Depuração
+- Os logs principais são exibidos no console
+- Use `print()` para depuração adicional
+- Monitore o uso de memória e CPU
+- Verifique os logs do servidor API local
+
+## Recursos Adicionais
+- [Documentação da API do Telegram](mdc:https:/core.telegram.org/bots/api)
+- [Documentação do pyTelegramBotAPI](mdc:https:/github.com/eternnoir/pyTelegramBotAPI)
+- [Documentação da API do YouTube](mdc:https:/developers.google.com/youtube/v3)
+- [Documentação do y2mate-api](mdc:https:/github.com/Simatwa/y2mate-api)
