@@ -27,6 +27,16 @@ def download(bot, message, userInput, videoURL):
             api.save(third_dict=video_metadata, dir="vids", naming_format=vidFileName, progress_bar=True)
         except Exception as e:
             bot.reply_to(message, f"Error downloading video: {e}")
+            continue
+
+        file_path = os.path.join(mediaPath, vidFileName)
+        file_size = os.path.getsize(file_path)
+        max_size = 2 * 1024 * 1024 * 1024
+        if file_size > max_size:
+            bot.edit_message_text(chat_id=downloadMsg.chat.id, message_id=downloadMsg.message_id, text="<b>File too large to upload (over 2GB).</b>")
+            bot.reply_to(message, "Please choose a lower quality option.")
+            os.remove(file_path)
+            continue
 
         bot.edit_message_text(chat_id=downloadMsg.chat.id, message_id=downloadMsg.message_id, text="<b>Uploading...📤</b>")
 

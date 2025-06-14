@@ -18,6 +18,8 @@
 - Paste this code into your file and replace with your own values.
 ```
 BOT_API_KEY = "9999999999:AAHePL8-xSzjOlnF5dRGiwhNyxxZsS3u7f4" # Replace with your own token
+# Optional: point to your local API server to enable 2GB uploads
+BOT_API_URL = "http://localhost:8081"
 ```
 - Save it!
   
