@@ -18,6 +18,8 @@
 - Paste this code into your file and replace with your own values.
 ```
 BOT_API_KEY = "9999999999:AAHePL8-xSzjOlnF5dRGiwhNyxxZsS3u7f4" # Replace with your own token
+# Optional: point to your local API server to enable 2GB uploads
+BOT_API_URL = "http://localhost:8081"
 ```
 - Save it!
   
@@ -51,6 +53,60 @@ Read the instructions on [eternnoir/pyTelegramBotAPI](https://github.com/eternno
 - run: ```python bot.py```
 
 **both script & api server should run at the same time order to work.**
+
+### 5. Deploy with Docker
+1. Create a `.env` file containing your `BOT_API_KEY` and optional `BOT_API_URL`.
+2. Build and start the container using docker-compose:
+   ```bash
+   docker-compose up -d --build
+   ```
+The compose file builds the image for `linux/amd64` so it runs on an x86 VPS
+   even if you build from an Apple Silicon machine. Traefik is configured to
+   expose the bot at **bot.sherlockramos.tech**.
+
+## API
+
+The bot exposes a small command based API over Telegram. Interact using the
+standard Telegram Bot API by sending messages to your bot. Below are the
+available endpoints and their behaviour.
+
+### Endpoints
+
+| Command/Action | Description |
+|---------------|-------------|
+| `/start` | Greet the user and provide a short introduction. |
+| `/help` | Display instructions on how to download a video. |
+| `YouTube link` | Send any message containing a valid YouTube URL. The bot will reply with a list of quality options as inline buttons. |
+| `Quality button` | When a button is pressed the bot downloads the video and uploads it back. |
+
+### Request and Response Format
+
+All interactions occur via Telegram messages. Requests are regular text messages
+or callback data from inline buttons. Responses are text messages or video
+files. Example flows:
+
+```text
+User: /start
+Bot: Hello, I'm a Simple Youtube Downloader!👋
+
+User: /help
+Bot: <b>Just send your youtube link and select the video quality.</b> …
+
+User: https://youtu.be/dQw4w9WgXcQ
+Bot: Choose a stream:
+  [360p] [720p]
+
+User presses 720p button
+Bot: sends the video file (if under 2GB)
+```
+
+### Limitations
+
+- Files larger than **2 GB** will not be uploaded; choose a lower quality if the
+  selected stream exceeds this size.
+- Only YouTube links are recognized.
+- Without a local Bot API server (`BOT_API_URL`) uploads are limited to 50 MB by
+  Telegram's default servers.
 #
 
 ## Disclaimer

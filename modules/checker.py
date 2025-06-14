@@ -74,9 +74,9 @@ def qualityChecker(bot, message, videoURL):
     # Add Inline Buttons to get user input
 
     def gen_markup():
-        markup = InlineKeyboardMarkup() 
-        for value in showList.values(): 
-            callbackData = f"{ value["q"] }#{ videoURL }"
+        markup = InlineKeyboardMarkup()
+        for value in showList.values():
+            callbackData = f"{value['q']}#{videoURL}"
             button = InlineKeyboardButton(text=f"{value['q']} ({value['size']})", callback_data=callbackData)
             markup.add(button)
         return markup

@@ -9,6 +9,11 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_API_KEY")
 
+# Configure custom API server if provided
+custom_api_url = os.getenv("BOT_API_URL")
+if custom_api_url:
+    telebot.apihelper.API_URL = f"{custom_api_url.rstrip('/')}/bot{{0}}/{{1}}"
+
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
                       
 @bot.message_handler(commands=['start'])
