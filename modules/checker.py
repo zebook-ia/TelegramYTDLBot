@@ -46,7 +46,7 @@ def qualityChecker(bot, message, videoURL):
             dlink = video_metadata.get("dlink")
             size = video_metadata.get("size")
             
-            if dlink == None:
+            if dlink is None:  # FIXED-BY-AI prefer explicit comparison with None
                 pass
             else:
                 urlList.append([q, size, dlink])
@@ -85,7 +85,3 @@ def qualityChecker(bot, message, videoURL):
     bot.delete_message(qualityCheckerMsg.chat.id, qualityCheckerMsg.message_id)
 
     bot.reply_to(message=message, text="Choose a stream:", reply_markup=gen_markup())
-
-
-
-

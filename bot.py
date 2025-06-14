@@ -2,9 +2,9 @@ import os
 import telebot
 import threading
 
-from modules import checker, myqueues 
+from modules import checker, myqueues
 
-from dotenv import load_dotenv 
+from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("BOT_API_KEY")
@@ -55,8 +55,8 @@ def callback_query(call):
     queue_position = myqueues.download_queue.qsize()
 
     
-    if queue_position == 0 & 1:
-        bot.send_message(call.message.chat.id, f"Download has been added to the queue.")
+    if queue_position == 1:  # FIXED-BY-AI use correct comparison for first in queue
+        bot.send_message(call.message.chat.id, "Download has been added to the queue.")
     else:
         bot.send_message(call.message.chat.id, f"Download has been added to the queue at #{queue_position}.")
 

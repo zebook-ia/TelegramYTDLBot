@@ -1,4 +1,5 @@
 import os
+import subprocess
 from y2mate_api import Handler
 import requests
 import pytube
@@ -33,10 +34,43 @@ def download(bot, message, userInput, videoURL):
         file_size = os.path.getsize(file_path)
         max_size = 2 * 1024 * 1024 * 1024
         if file_size > max_size:
-            bot.edit_message_text(chat_id=downloadMsg.chat.id, message_id=downloadMsg.message_id, text="<b>File too large to upload (over 2GB).</b>")
-            bot.reply_to(message, "Please choose a lower quality option.")
+            bot.edit_message_text(
+                chat_id=downloadMsg.chat.id,
+                message_id=downloadMsg.message_id,
+                text="<b>Arquivo grande, comprimindo...</b>",
+            )
+            compressed_name = f"compressed_{vidFileName}"
+            compressed_path = os.path.join(mediaPath, compressed_name)
+            try:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-i",
+                        file_path,
+                        "-vf",
+                        "scale='min(1280,iw)':-2",
+                        "-c:v",
+                        "libx264",
+                        "-preset",
+                        "fast",
+                        "-crf",
+                        "28",
+                        "-c:a",
+                        "copy",
+                        "-fs",
+                        str(max_size - 10 * 1024 * 1024),
+                        compressed_path,
+                    ],
+                    check=True,
+                )
+            except Exception as e:
+                bot.reply_to(message, f"Erro ao comprimir vídeo: {e}")
+                os.remove(file_path)
+                continue
+
             os.remove(file_path)
-            continue
+            file_path = compressed_path
+            vidFileName = compressed_name
 
         bot.edit_message_text(chat_id=downloadMsg.chat.id, message_id=downloadMsg.message_id, text="<b>Uploading...📤</b>")
 
