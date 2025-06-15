@@ -1,6 +1,6 @@
 # Bot de Download do YouTube
 
-Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K** com limite de **2 GB** por arquivo. Este projeto é destinado apenas a fins educacionais.
+Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K**. Este projeto é destinado apenas a fins educacionais. Vídeos acima de **2 GB** são automaticamente comprimidos.
 
 ## Recursos
 - ✅ Downloads rápidos

@@ -573,66 +573,50 @@ bot.infinity_polling()
 
 ## File: README.md
 ````markdown
-# <p align="center">YouTube Downloader Bot</p>
-<p align="center">A Telegram Bot to Download YouTube Videos upto 4K.</p>
-<p align="center"><i>(Only for Educational Purposes)</i></p>
+# Bot de Download do YouTube
 
-#
-## Features 
-- ✅ Fast Downloads
-- ✅ Choose video quality before download.
-- ✅ Downloading Queue for users.
-- ✅ Automatic ffmpeg compression for files over 2GB
-- ✅ Save server side resources.
-- ✅ No Developer side limits.
+Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K**. Este projeto é destinado apenas a fins educacionais. Vídeos acima de **2 GB** são automaticamente comprimidos.
 
-## How to Deploy
-### 1. Setup Environment Variables
-- Get your [BOT_API_KEY](https://core.telegram.org/bots/tutorial#obtain-your-bot-token) from here.
-- Create .env file
-- Paste this code into your file and replace with your own values.
+## Recursos
+- ✅ Downloads rápidos
+- ✅ Escolha da qualidade antes do download
+- ✅ Fila de downloads por usuário
+- ✅ Redução automática com ffmpeg para vídeos maiores que 2 GB
+- ✅ Economia de recursos do servidor
+- ✅ Sem limites definidos pelo desenvolvedor
+
+## Como Configurar
+
+### 1. Variáveis de Ambiente
+1. Obtenha seu [`BOT_API_KEY`](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
+2. Crie um arquivo `.env` na pasta do projeto e preencha conforme o exemplo:
+
+```ini
+BOT_API_KEY="seu_token"
 ```
-BOT_API_KEY = "9999999999:AAHePL8-xSzjOlnF5dRGiwhNyxxZsS3u7f4" # Replace with your own token
+
+### 2. Instalação das Dependências
+```bash
+git clone https://github.com/hansanaD/TelegramYTDLBot.git
+cd TelegramYTDLBot
+pip install -r requirements.txt
 ```
-- Save it!
-  
-#
-### 2. Install Dependencies
+
+### 3. Iniciando o Bot
+Abra um novo terminal ou use `screen` e execute:
+
+```bash
+python bot.py
 ```
-git clone https://github.com/hansanaD/TelegramYTDLBot.git;
-cd TelegramYTDLBot;
-pip install -r requirements.txt;
-```
-#
-### 3. Run api server locally (optional)
-You can choose not to use this service.\
-But then you won't be able  to **upload files up to 2000 MB** and get these [features](https://core.telegram.org/bots/api#using-a-local-bot-api-server).
 
-- Generate your instructions from [here](https://tdlib.github.io/telegram-bot-api/build.html). _(This step might take upto 20 mins.)_
-- Go to:
-- ```
-  cd telegram-bot-api/bin
-  ```
-- Get API ID & HASH from [here](https://core.telegram.org/api/obtaining_api_id). (Watch this [Tutorial](https://www.youtube.com/watch?v=8naENmP3rg4) to get help.)
-- Start the server. (Remember to replace the values with your own values):
-- ```
-  ./telegram-bot-api --api-id=XXXXX --api-hash=XXXXXXXXXXXX --http-port=8081 --local
-  ```
+O bot e o servidor da API (caso utilize) precisam estar rodando simultaneamente.
 
-Read the instructions on [eternnoir/pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/#using-local-bot-api-sever) and [tdlib/telegram-bot-api](https://github.com/tdlib/telegram-bot-api) for more information.
-#
-### 4. Run your bot
-- open a new "[screen](https://www.geeksforgeeks.org/screen-command-in-linux-with-examples/)" or tab on your terminal.
-- run: ```python bot.py```
+## Aviso
+Este repositório é apenas para uso pessoal e educacional. Não utilize o projeto para fins comerciais ou atividades ilícitas. O mantenedor não se responsabiliza por mau uso do software ou consequências legais resultantes.
 
-**both script & api server should run at the same time order to work.**
-#
+**APIs utilizadas:** [y2mate-api](https://github.com/Simatwa/y2mate-api/) e [pytelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/).
 
-## Disclaimer
-This repository is intended for educational and personal use only. The use of this repository for any commercial or illegal purposes is strictly prohibited. The repository owner does not endorse or encourage the downloading or sharing of copyrighted material without permission. The repository owner is not responsible for any misuse of the software or any legal consequences that may arise from such misuse
+Dúvidas ou problemas? Entre em contato com [@dev00111](https://t.me/dev00111).
 
-- **APIs : [y2mate-api](https://github.com/Simatwa/y2mate-api/) , [pytelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/)**
-- **Contact for issues : [@dev00111](https://t.me/dev00111)**
-#
-_Sorry for my bad english and my messy documentation. 😶_
+_Espero que este README em português seja mais claro para todos._
 ````
