@@ -1,4 +1,3 @@
-import time
 from queue import Queue
 from modules.ytdownloader import download
 

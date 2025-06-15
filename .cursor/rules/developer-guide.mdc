@@ -34,15 +34,6 @@ pip install -r requirements.txt
 BOT_API_KEY = "seu_token_aqui"
 ```
 
-### Configuração do Servidor API Local (Opcional)
-Para suportar uploads de até 2GB:
-1. Gere as instruções em https://tdlib.github.io/telegram-bot-api/build.html
-2. Obtenha API ID & HASH em https://core.telegram.org/api/obtaining_api_id
-3. Inicie o servidor:
-```bash
-cd telegram-bot-api/bin
-./telegram-bot-api --api-id=XXXXX --api-hash=XXXXXXXXXXXX --http-port=8081 --local
-```
 
 ## 2. Visão Geral da Estrutura do Projeto
 
@@ -123,7 +114,6 @@ python bot.py
 
 3. **Erro de Upload**
    - Verifique o limite de tamanho do arquivo
-   - Confirme se o servidor API local está rodando (para arquivos > 2GB)
    - Verifique as permissões de escrita no diretório temporário
 
 4. **Problemas de Performance**
@@ -136,7 +126,6 @@ python bot.py
 - Os logs principais são exibidos no console
 - Use `print()` para depuração adicional
 - Monitore o uso de memória e CPU
-- Verifique os logs do servidor API local
 
 ## Recursos Adicionais
 - [Documentação da API do Telegram](mdc:https:/core.telegram.org/bots/api)

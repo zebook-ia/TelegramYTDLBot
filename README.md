@@ -1,120 +1,135 @@
-# <p align="center">YouTube Downloader Bot</p>
-<p align="center">A Telegram Bot to Download YouTube Videos upto 4K under 2GB.</p>
-<p align="center"><i>(Only for Educational Purposes)</i></p>
+# TelegramYTDLBot
 
-#
-## Features 
-- ✅ Fast Downloads
-- ✅ Choose video quality before download.
-- ✅ Downloading Queue for users.
-- ✅ Max video upload size : 2GB
-- ✅ Save server side resources.
-- ✅ No Developer side limits.
+Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K**. Para vídeos maiores que 2 GB, o bot aplica compressão automaticamente.
 
-## How to Deploy
-### 1. Setup Environment Variables
-- Get your [BOT_API_KEY](https://core.telegram.org/bots/tutorial#obtain-your-bot-token) from here.
-- Create .env file
-- Paste this code into your file and replace with your own values.
+## Sumário
+
+* [Funcionalidades](#funcionalidades)
+* [Requisitos](#requisitos)
+* [Instalação](#instalação)
+* [Configuração](#configuração)
+* [Uso](#uso)
+* [API](#api)
+* [Aviso](#aviso)
+* [Créditos](#créditos)
+
+## Funcionalidades
+
+* Downloads rápidos
+* Escolha da qualidade antes do download
+* Fila de downloads por usuário
+* Compressão automática com ffmpeg para vídeos maiores que 2 GB
+* Economia de recursos do servidor
+* Sem limites definidos pelo desenvolvedor
+
+## Requisitos
+
+* Python 3.x
+* FFmpeg
+* Token do bot do Telegram
+
+## Instalação
+
+```bash
+git clone https://github.com/hansanaD/TelegramYTDLBot.git
+cd TelegramYTDLBot
+pip install -r requirements.txt
 ```
-BOT_API_KEY = "9999999999:AAHePL8-xSzjOlnF5dRGiwhNyxxZsS3u7f4" # Replace with your own token
-# Optional: point to your local API server to enable 2GB uploads
-BOT_API_URL = "http://localhost:8081"
+
+## Configuração
+
+Crie um arquivo `.env` com o token do seu bot:
+
+```ini
+BOT_API_KEY="seu_token"
+# Opcional: defina BOT_API_URL para apontar para um servidor API do Telegram
 ```
-- Save it!
-  
-#
-### 2. Install Dependencies
+
+Para uso com servidor local:
+
+1. Gere instruções a partir de [telegram-bot-api](https://tdlib.github.io/telegram-bot-api/build.html).
+2. Acesse:
+
+```bash
+cd telegram-bot-api/bin
 ```
-git clone https://github.com/hansanaD/TelegramYTDLBot.git;
-cd TelegramYTDLBot;
-pip install -r requirements.txt;
+
+3. Obtenha API ID e HASH: [link](https://core.telegram.org/api/obtaining_api_id)
+4. Inicie o servidor:
+
+```bash
+./telegram-bot-api --api-id=XXXXX --api-hash=XXXXXXXXXXXX --http-port=8081 --local
 ```
-#
-### 3. Run api server locally (optional)
-You can choose not to use this service.\
-But then you won't be able  to **upload files up to 2000 MB** and get these [features](https://core.telegram.org/bots/api#using-a-local-bot-api-server).
 
-- Generate your instructions from [here](https://tdlib.github.io/telegram-bot-api/build.html). _(This step might take upto 20 mins.)_
-- Go to:
-- ```
-  cd telegram-bot-api/bin
-  ```
-- Get API ID & HASH from [here](https://core.telegram.org/api/obtaining_api_id). (Watch this [Tutorial](https://www.youtube.com/watch?v=8naENmP3rg4) to get help.)
-- Start the server. (Remember to replace the values with your own values):
-- ```
-  ./telegram-bot-api --api-id=XXXXX --api-hash=XXXXXXXXXXXX --http-port=8081 --local
-  ```
+Referências adicionais:
 
-Read the instructions on [eternnoir/pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/#using-local-bot-api-sever) and [tdlib/telegram-bot-api](https://github.com/tdlib/telegram-bot-api) for more information.
-#
-### 4. Run your bot
-- open a new "[screen](https://www.geeksforgeeks.org/screen-command-in-linux-with-examples/)" or tab on your terminal.
-- run: ```python bot.py```
+* [eternnoir/pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/#using-local-bot-api-sever)
+* [tdlib/telegram-bot-api](https://github.com/tdlib/telegram-bot-api)
 
-**both script & api server should run at the same time order to work.**
+## Uso
 
-### 5. Deploy with Docker
-1. Create a `.env` file containing your `BOT_API_KEY` and optional `BOT_API_URL`.
-2. Build and start the container using docker-compose:
-   ```bash
-   docker-compose up -d --build
-   ```
-The compose file builds the image for `linux/amd64` so it runs on an x86 VPS
-   even if you build from an Apple Silicon machine. Traefik is configured to
-   expose the bot at **bot.sherlockramos.tech**.
+Inicie o bot em um terminal ou usando `screen`:
+
+```bash
+python bot.py
+```
+
+Mantenha o servidor da API local ativo simultaneamente para pleno funcionamento.
+
+## Deploy com Docker
+
+1. Crie o `.env` com `BOT_API_KEY` e opcional `BOT_API_URL`
+2. Execute:
+
+```bash
+docker-compose up -d --build
+```
+
+O `docker-compose.yml` está preparado para `linux/amd64`, compatível com VPS x86, mesmo em hosts Apple Silicon.
 
 ## API
 
-The bot exposes a small command based API over Telegram. Interact using the
-standard Telegram Bot API by sending messages to your bot. Below are the
-available endpoints and their behaviour.
+O bot responde a comandos via mensagens no Telegram.
 
 ### Endpoints
 
-| Command/Action | Description |
-|---------------|-------------|
-| `/start` | Greet the user and provide a short introduction. |
-| `/help` | Display instructions on how to download a video. |
-| `YouTube link` | Send any message containing a valid YouTube URL. The bot will reply with a list of quality options as inline buttons. |
-| `Quality button` | When a button is pressed the bot downloads the video and uploads it back. |
+| Comando/Ação       | Descrição                                           |
+| ------------------ | --------------------------------------------------- |
+| `/start`           | Saudação e introdução                               |
+| `/help`            | Instruções de uso                                   |
+| `link do YouTube`  | O bot responde com botões de qualidade para escolha |
+| Botão de qualidade | Baixa e envia o vídeo, se menor que 2 GB            |
 
-### Request and Response Format
-
-All interactions occur via Telegram messages. Requests are regular text messages
-or callback data from inline buttons. Responses are text messages or video
-files. Example flows:
+### Fluxo de exemplo
 
 ```text
-User: /start
-Bot: Hello, I'm a Simple Youtube Downloader!👋
+Usuário: /start
+Bot: Hello, I'm a Simple Youtube Downloader!
 
-User: /help
-Bot: <b>Just send your youtube link and select the video quality.</b> …
+Usuário: /help
+Bot: <b>Just send your youtube link and select the video quality.</b>
 
-User: https://youtu.be/dQw4w9WgXcQ
+Usuário: https://youtu.be/dQw4w9WgXcQ
 Bot: Choose a stream:
   [360p] [720p]
 
-User presses 720p button
-Bot: sends the video file (if under 2GB)
+Usuário pressiona 720p
+Bot: envia o vídeo
 ```
 
-### Limitations
+### Limitações
 
-- Files larger than **2 GB** will not be uploaded; choose a lower quality if the
-  selected stream exceeds this size.
-- Only YouTube links are recognized.
-- Without a local Bot API server (`BOT_API_URL`) uploads are limited to 50 MB by
-  Telegram's default servers.
-#
+* Arquivos maiores que **2 GB** não serão enviados
+* Apenas links do YouTube são reconhecidos
+* Sem servidor local (`BOT_API_URL`), uploads são limitados a **50 MB**
 
-## Disclaimer
-This repository is intended for educational and personal use only. The use of this repository for any commercial or illegal purposes is strictly prohibited. The repository owner does not endorse or encourage the downloading or sharing of copyrighted material without permission. The repository owner is not responsible for any misuse of the software or any legal consequences that may arise from such misuse
+## Aviso
 
-- **APIs : [y2mate-api](https://github.com/Simatwa/y2mate-api/) , [pytelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/)**
-- **Contact for issues : [@dev00111](https://t.me/dev00111)**
-#
-_Sorry for my bad english and my messy documentation. 😶_
+Este projeto é apenas para uso pessoal e educacional. Não use para fins comerciais ou ilegais. O autor não se responsabiliza por qualquer uso indevido.
 
+## Créditos
 
+* [y2mate-api](https://github.com/Simatwa/y2mate-api/)
+* [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/)
+
+Dúvidas ou problemas? Contate [@dev00111](https://t.me/dev00111).
