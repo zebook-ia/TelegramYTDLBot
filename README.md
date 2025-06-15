@@ -1,46 +1,55 @@
-# Bot de Download do YouTube
+# TelegramYTDLBot
 
-Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K**. Este projeto é destinado apenas a fins educacionais. Vídeos acima de **2 GB** são automaticamente comprimidos.
+Um bot do Telegram capaz de baixar vídeos do YouTube em até **4K**. Para vídeos maiores que 2 GB, o bot aplica compressão automaticamente.
 
-## Recursos
-- ✅ Downloads rápidos
-- ✅ Escolha da qualidade antes do download
-- ✅ Fila de downloads por usuário
-- ✅ Redução automática com ffmpeg para vídeos maiores que 2 GB
-- ✅ Economia de recursos do servidor
-- ✅ Sem limites definidos pelo desenvolvedor
+## Sumário
+- [Funcionalidades](#funcionalidades)
+- [Requisitos](#requisitos)
+- [Instalação](#instalacao)
+- [Configuração](#configuracao)
+- [Uso](#uso)
+- [Aviso](#aviso)
+- [Créditos](#creditos)
 
-## Como Configurar
+## Funcionalidades
+- Downloads rápidos
+- Escolha da qualidade antes do download
+- Fila de downloads por usuário
+- Compressão automática com ffmpeg para vídeos maiores que 2 GB
+- Economia de recursos do servidor
+- Sem limites definidos pelo desenvolvedor
 
-### 1. Variáveis de Ambiente
-1. Obtenha seu [`BOT_API_KEY`](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
-2. Crie um arquivo `.env` na pasta do projeto e preencha conforme o exemplo:
+## Requisitos
+- Python 3.x
+- FFmpeg
+- Token do bot do Telegram
 
-```ini
-BOT_API_KEY="seu_token"
-```
-
-### 2. Instalação das Dependências
+## Instalação
 ```bash
 git clone https://github.com/hansanaD/TelegramYTDLBot.git
 cd TelegramYTDLBot
 pip install -r requirements.txt
 ```
 
-### 3. Iniciando o Bot
-Abra um novo terminal ou use `screen` e execute:
+## Configuração
+Crie um arquivo `.env` com o token do seu bot:
+```ini
+BOT_API_KEY="seu_token"
+# Opcional: defina BOT_API_URL para apontar para um servidor API do Telegram
+```
 
+## Uso
+Inicie o bot em um terminal ou usando `screen`:
 ```bash
 python bot.py
 ```
-
-O bot e o servidor da API (caso utilize) precisam estar rodando simultaneamente.
+Mantenha um servidor API do Telegram rodando caso queira acelerar uploads.
 
 ## Aviso
-Este repositório é apenas para uso pessoal e educacional. Não utilize o projeto para fins comerciais ou atividades ilícitas. O mantenedor não se responsabiliza por mau uso do software ou consequências legais resultantes.
+Este projeto é apenas para uso pessoal e educacional. Não utilize o código para fins comerciais ou ilegais. O mantenedor não se responsabiliza por mau uso do software ou consequências legais.
 
-**APIs utilizadas:** [y2mate-api](https://github.com/Simatwa/y2mate-api/) e [pytelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/).
+## Créditos
+- [y2mate-api](https://github.com/Simatwa/y2mate-api/)
+- [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI/)
 
 Dúvidas ou problemas? Entre em contato com [@dev00111](https://t.me/dev00111).
-
-_Espero que este README em português seja mais claro para todos._
