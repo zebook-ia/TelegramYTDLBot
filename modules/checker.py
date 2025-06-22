@@ -1,87 +1,41 @@
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import re
 from y2mate_api import Handler
 
+def extract_youtube_links(text: str) -> list[str]:
+    """
+    Extracts YouTube links from a given text.
+    """
+    link_filter = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+    all_links = re.findall(link_filter, text)
+    yt_links = [link for link in all_links if 'youtube.com' in link or 'youtu.be' in link]
+    return yt_links
 
-def linkCheck(bot, message):
-
-    linkFilter = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
-    userLinks = re.findall(linkFilter, message.text)
-
-    yt_link = []
-    for link in userLinks:
-        if 'youtube.com' in link or 'youtu.be' in link:
-            yt_link.append(link)
-
-    if yt_link:
-        # bot.reply_to(message, "YouTube links found.")
-
-        # global videoURL
-        # global ytApi
-
-        videoURL = yt_link[0]
+def get_video_qualities(video_url: str) -> list[dict]:
+    """
+    Fetches available video qualities for a given YouTube URL.
+    Returns a list of dictionaries, each containing 'q' (quality), 'size', and 'dlink'.
+    Returns an empty list if no qualities are found or an error occurs.
+    """
+    try:
+        yt_api = Handler(video_url)
+        q_list = ['4k', '1080p', '720p', '480p', '360p', '240p']
         
+        available_qualities = []
 
-        qualityChecker(bot=bot, message=message, videoURL=videoURL)
-
-    else:
-        bot.reply_to(message, "No YouTube links found!")
-
-
-def qualityChecker(bot, message, videoURL):
-
-    qualityCheckerMsg = bot.reply_to(message, "Looking for Available Qualities..🔎")
-
-    ytApi = Handler(videoURL)
-
-    q_list = ['4k', '1080p', '720p', '480p', '360p', '240p']
-    # q_list.reverse()
-
-    urlList = []
-
-    def getVidInfo(r):
-        for video_metadata in ytApi.run(quality=r):
-        
-            q = video_metadata.get("q")
-            dlink = video_metadata.get("dlink")
-            size = video_metadata.get("size")
-            
-            if dlink is None:  # FIXED-BY-AI prefer explicit comparison with None
-                pass
-            else:
-                urlList.append([q, size, dlink])
-                # print(r, " fetched")
+        for quality_preference in q_list:
+            for video_metadata in yt_api.run(quality=quality_preference):
+                q = video_metadata.get("q")
+                dlink = video_metadata.get("dlink")
+                size = video_metadata.get("size")
                 
-    # Iterate over q_list to check if res quality exist on that video
-    for r in q_list:
-        getVidInfo(r)
+                if dlink:
+                    # Check if this quality (q) is already added to avoid duplicates from Handler behavior
+                    if not any(item['q'] == q for item in available_qualities):
+                        available_qualities.append({"q": q, "size": size, "dlink": dlink})
 
-    # print(urlList)
-
-    # Create a new list to show
-    global showList
-    showList = {}
-    for count, item in enumerate(urlList, 1):
-        del item[2] # Remove dlink from list
-        q = item[0]
-        # print(i)
-        size = item[1] 
-        showList.update( { count: { "q":q, "size": size }} )
-    
-    # print(showList)
-
-
-    # Add Inline Buttons to get user input
-
-    def gen_markup():
-        markup = InlineKeyboardMarkup()
-        for value in showList.values():
-            callbackData = f"{value['q']}#{videoURL}"
-            button = InlineKeyboardButton(text=f"{value['q']} ({value['size']})", callback_data=callbackData)
-            markup.add(button)
-        return markup
-    
-
-    bot.delete_message(qualityCheckerMsg.chat.id, qualityCheckerMsg.message_id)
-
-    bot.reply_to(message=message, text="Choose a stream:", reply_markup=gen_markup())
+        # Sort qualities for consistent presentation if needed, e.g., by a predefined order or size
+        # For now, returning as found, but y2mate_api might return them in a specific order.
+        return available_qualities
+    except Exception as e:
+        print(f"Error fetching video qualities for {video_url}: {e}")
+        return []
