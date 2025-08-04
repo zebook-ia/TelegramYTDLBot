@@ -52,6 +52,8 @@ multidict==6.0.5 # Dependência do aiohttp
 # pipreqs==0.4.13 # Removido - ferramenta de geração de requirements
 proglog==0.1.10 # Usado por moviepy, mas moviepy removido
 # prompt-toolkit==3.0.43 # Removido - CLIs interativas
+pytest==8.2.2
+pytest-mock==3.14.0
 protobuf==4.25.3 # Usado por libs do Google, mas elas foram removidas
 # pyasn1==0.5.1 # Removido - transitório
 # pyasn1-modules==0.3.0 # Removido - transitório
