@@ -5,9 +5,14 @@ def extract_youtube_links(text: str) -> list[str]:
     """
     Extracts YouTube links from a given text.
     """
-    link_filter = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+    # A simple regex for URLs, which might be too greedy and capture trailing punctuation.
+    link_filter = re.compile(r'http[s]?://\S+')
     all_links = re.findall(link_filter, text)
-    yt_links = [link for link in all_links if 'youtube.com' in link or 'youtu.be' in link]
+
+    # Clean the links by stripping common trailing punctuation.
+    cleaned_links = [link.rstrip('.,;!?') for link in all_links]
+
+    yt_links = [link for link in cleaned_links if 'youtube.com' in link or 'youtu.be' in link]
     return yt_links
 
 def get_video_qualities(video_url: str) -> list[dict]:
